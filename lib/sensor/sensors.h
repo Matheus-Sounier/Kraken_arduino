@@ -2,7 +2,7 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#include "pins.h"
+#include "./include/"
 
 // Último erro válido — usado pelo PID quando perde a linha
 extern int erroAnterior;

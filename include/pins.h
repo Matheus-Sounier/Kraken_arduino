@@ -1,5 +1,9 @@
+
+
 #ifndef PINS_H
 #define PINS_H
+
+
 
 #define S1 A0
 #define S2 A1
