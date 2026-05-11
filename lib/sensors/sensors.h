@@ -1,14 +1,14 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#include <Arduino.h>
-#include <pins.h>
+#include "Arduino.h"
+#include "pins.h"
 
-extern int erroAnterior;
+extern int previousError;
 
 void sensorsSetup();   
-int  lerErro();        
-bool todosBranco();    
-bool todosPreto();     
+int  errorRead();        
+bool allWhite();    
+bool allBlack();     
 
 #endif

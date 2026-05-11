@@ -1,7 +1,8 @@
-void setup () {
-  
-}
+#ifndef ENGINE_H
+#define ENGINE_H
 
-void loop () {
+#include "Arduino.h"
+#include "pins.h"
 
-}
+void engineSetup();
+void moveEngine(int leftSpeed, int rightSpeed);
