@@ -1,7 +1,7 @@
-#include <Arduino.h>
-
 #ifndef PINS_H
 #define PINS_H
+
+#include <Arduino.h>
 
 #define S1 A0
 #define S2 A1
