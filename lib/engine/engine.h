@@ -5,4 +5,7 @@
 #include "pins.h"
 
 void engineSetup();
-void moveEngine(int leftSpeed, int rightSpeed);
+void engineMove(int leftSpeed, int rightSpeed);
+void engineStop();
+
+#endif
