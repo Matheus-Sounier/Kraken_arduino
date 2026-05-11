@@ -42,3 +42,5 @@ int lerErro() {
 
   erroAnterior = erro;
   return erro;
+
+}
