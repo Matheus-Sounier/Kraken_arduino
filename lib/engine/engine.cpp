@@ -40,6 +40,6 @@ void engineMove (int leftSpeed, int rightSpeed) {
     digitalWrite(IN4, HIGH);
     rightSpeed = -rightSpeed;
   }
-  analogWrite(ENA, rightSpeed);
+  analogWrite(ENB, rightSpeed);
  
 }
