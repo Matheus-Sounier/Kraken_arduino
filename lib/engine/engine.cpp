@@ -17,3 +17,29 @@ void engineStop () {
   digitalWrite (IN3, LOW); 
   digitalWrite (IN4, LOW);
 }
+
+void engineMove (int leftSpeed, int rightSpeed) {
+  leftSpeed = constrain(leftSpeed, -255, 255);
+  rightSpeed = constrain(rightSpeed, -255, 255);
+
+  if (leftSpeed >= 0) {
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+  } else {
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    leftSpeed = -leftSpeed;
+  }
+  analogWrite(ENA, leftSpeed);
+
+  if (rightSpeed >= 0) {
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+  } else {
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+    rightSpeed = -rightSpeed;
+  }
+  analogWrite(ENA, rightSpeed);
+ 
+}
