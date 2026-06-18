@@ -3,17 +3,23 @@
 #include "engine.h"
 #include "pid.h"
 
-void setup () {
+void setup() {
   Serial.begin(9600);
 
-  sensorsSetup();
   engineSetup();
   pidSetup();
+  sensorsSetup();
 
-  delay(3000);
+  delay(1000);
 }
 
-void loop () {
+void loop() {
   int error = errorRead();
+
+  if (allWhite()) {
+    engineStop();
+    return;
+  }
+
   pidCalculate(error);
 }
