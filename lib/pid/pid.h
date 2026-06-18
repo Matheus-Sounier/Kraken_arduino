@@ -1,17 +1,17 @@
-#ifndef PID_D
-#define PID_D
+#ifndef PID_H
+#define PID_H
 
 #include "Arduino.h"
 #include "engine.h"
-#include "sensors.h"
 
-extern float Kp;
-extern float Ki;
-extern float Kd;
+extern float Kp;   
+extern float Ki;   
+extern float Kd;   
 
 extern int baseSpeed;
 
 void pidSetup();
-void pidCalculate(int error);
+
+void pidCalculate(float error);
 
 #endif
