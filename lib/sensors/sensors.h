@@ -4,11 +4,14 @@
 #include "Arduino.h"
 #include "pins.h"
 
-extern int previousError;
+extern float previousError;
 
-void sensorsSetup();   
-int  errorRead();        
-bool allWhite();    
-bool allBlack();     
+void sensorsSetup();
+
+float errorRead();
+float getLastError();
+
+bool allWhite();
+bool allBlack();
 
 #endif

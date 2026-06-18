@@ -1,62 +1,80 @@
-// sensors.cpp
 #include "Arduino.h"
 #include "sensors.h"
 
-int previousError = 0;
+int sensorMin[NUM_SENSORS];
+int sensorMax[NUM_SENSORS];
+
+float previousError = 0;
+
+static int readNormalized(int i) {
+  int raw = analogRead(SENSOR_PINS[i]);
+
+  if (sensorMax[i] == sensorMin[i]) return 0;
+
+  int normalized = map(raw, sensorMin[i], sensorMax[i], 0, 100);
+  return constrain(normalized, 0, 100);
+}
 
 void sensorsSetup() {
-  pinMode(S1, INPUT);
-  pinMode(S2, INPUT);
-  pinMode(S3, INPUT);
-  pinMode(S4, INPUT);
-  pinMode(S5, INPUT);
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    pinMode(SENSOR_PINS[i], INPUT);
+    sensorMin[i] = 1023;
+    sensorMax[i] = 0;
+  }
+
+  pinMode(CALIBRATION_LED, OUTPUT);
+  unsigned long start = millis();
+
+  while (millis() - start < CALIBRATION_TIME_MS) {
+    digitalWrite(CALIBRATION_LED, (millis() / 100) % 2);
+
+    for (int i = 0; i < NUM_SENSORS; i++) {
+      int raw = analogRead(SENSOR_PINS[i]);
+      if (raw < sensorMin[i]) sensorMin[i] = raw;
+      if (raw > sensorMax[i]) sensorMax[i] = raw;
+    }
+  }
+
+  digitalWrite(CALIBRATION_LED, LOW);
 }
 
 bool allWhite() {
-  return (
-      digitalRead(S1) &&
-      digitalRead(S2) &&
-      digitalRead(S3) &&
-      digitalRead(S4) &&
-      digitalRead(S5)
-    );
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    if (readNormalized(i) > 20) return false;
+  }
+  return true;
 }
 
 bool allBlack() {
-  return (
-      !digitalRead(S1) &&
-      !digitalRead(S2) && 
-      !digitalRead(S3) && 
-      !digitalRead(S4) && 
-      !digitalRead(S5)
-    );
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    if (readNormalized(i) < 80) return false;
+  }
+  return true;
 }
 
-// Pegadinhas
-int errorRead() {
+float getLastError() {
+  return previousError;
+}
+
+float errorRead() {
   if (allBlack()) return 0;
   if (allWhite()) return previousError;
 
-  
-  int s1 = !digitalRead(S1);
-  int s2 = !digitalRead(S2);
-  int s3 = !digitalRead(S3);
-  int s4 = !digitalRead(S4);
-  int s5 = !digitalRead(S5);
+  const int weights[NUM_SENSORS] = { -200, -100, 0, 100, 200 };
 
-  int activeSensors = s1 + s2 + s3 + s4 + s5;
+  long weightedSum = 0;
+  int  activeSum   = 0;
 
-  // Só mexe se entende de média ponderada, plis
-  if (activeSensors == 0) return previousError;
-  int weightedSum =
-      (-2 * s1) +
-      (-1 * s2) +
-      ( 0 * s3) +
-      ( 1 * s4) +
-      ( 2 * s5);
-  int error = weightedSum / activeSensors;
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    int val = readNormalized(i);
+    weightedSum += (long)val * weights[i];
+    activeSum   += val;
+  }
+
+  if (activeSum == 0) return previousError;
+
+  float error = (float)(weightedSum / activeSum);
 
   previousError = error;
   return error;
-
 }
