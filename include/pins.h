@@ -3,16 +3,20 @@
 
 #include <Arduino.h>
 
-#define S1 A0
-#define S2 A1
-#define S3 A2
-#define S4 A3
-#define S5 A4
+#define NUM_SENSORS 5
 
-#define ENA 5
-#define ENB 6
+const uint8_t SENSOR_PINS[NUM_SENSORS] = { A0, A1, A2, A3, A4 };
 
-#define IN1 8
+#define CALIBRATION_TIME_MS 3000
+#define CALIBRATION_LED LED_BUILTIN
+
+extern int sensorMin[NUM_SENSORS];
+extern int sensorMax[NUM_SENSORS];
+
+#define ENA 5 
+#define ENB 6 
+
+#define IN1 8 
 #define IN2 9
 #define IN3 10
 #define IN4 11
