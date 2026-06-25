@@ -2,7 +2,7 @@
 
 ## Overview
 
-Kraken is a line follower robot project designed with a modular firmware architecture. The system reads infrared sensors to detect the line position and uses a PID controller to continuously adjust the speed of each motor, keeping the robot centered on the track.
+Kraken is a line follower robot project designed with a modular firmware architecture. The system reads infrared sensors to detect the line position and uses a PID controller to continuously adjust the speed of each motor, keeping the robot centered on the track of the line, while trying to predict which direction should be followed when crossing two different lines.
 
 The project is organized using PlatformIO and separated into independent modules:
 
